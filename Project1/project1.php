@@ -23,43 +23,43 @@
 <html>
     <head>
         <title>Project 1</title>
+        <link href="/Project1/css/styles.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        <script type="text/javascript">
-            function reply_click(clicked_id)
-            {
-                alert(clicked_id);
-            }
-        </script>
-        <form method="get">
-            Name Lookup: <input type="text" name="lookupTxt"> <br />
-            
-            Genre: <select name="genreTxt">
-                <option value="">No Type</option>
-                <option value="animation">Animation</option>
-                <option value="fantasy">Fantasy</option>
-                <option value="adventure">Adventure</option>
-                <option value="horror">Horror</option>
-            </select> <br />
-            
-            Studio: <select name="studioTxt">
-                <option value="">No Type</option>
-                <option value="Disney">Disney</option>
-                <option value="Pixar">Pixar</option>
-                <option value="Dreamworks">Dreamworks</option>
-            </select> <br />
-            <input type="hidden" name="studioTxt" value="">
-            Show only if in stock:<input type="checkbox" name="studioTxt" value="1">
-            <br />
-            Sort By: <select name="sortTxt">
-                <option value="name">Name</option>
-                <option value="price">Price</option>
-            </select>
-            <br><input type="submit" value="Search">
-        </form>
+            <h1 id="title">Online Movie Store</h1>
+            <script type="text/javascript">
+                function reply_click(clicked_id)
+                {
+                    alert(clicked_id);
+                }
+            </script>
+            <form id="forms" method="get">
+                Name Lookup: <input type="text" name="lookupTxt"> <br />
+                
+                Genre: <select name="genreTxt">
+                    <option value="">No Type</option>
+                    <option value="Animation">Animation</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Adventure">Adventure</option>
+                    <option value="Horror">Horror</option>
+                </select> <br />
+                
+                Studio: <select name="studioTxt">
+                    <option value="">No Type</option>
+                    <option value="Disney">Disney</option>
+                    <option value="Pixar">Pixar</option>
+                    <option value="Dreamworks">Dreamworks</option>
+                </select> <br />
+    
+                Sort By: <select name="sortTxt">
+                    <option value="name">Name</option>
+                    <option value="price">Price</option>
+                </select>
+                <br><input type="submit" value="Search">
+            </form>
         
         <?php
-        echo $_SESSION["buttClick"];
+        echo "<br>".$_SESSION["buttClick"]."<br>";
         //connecting to db
         $dbHost = getenv('IP');
         $dbPort = 3306;
@@ -72,19 +72,20 @@
 
         
         //$sql = " SELECT * FROM movie";
-        $sql = "SELECT movie.name, movie.price, genre.name
-                FROM ((movie_genre
-                    INNER JOIN movie ON movie_genre.movie_id = movie.id) 
-                    INNER JOIN genre ON movie_genre.genre_id = genre.id)";
-        $AND = 0;
+        $sql = "SELECT movie.name AS name, genre.name AS genre, movie.price AS price, studio.name AS studio
+                FROM((movie 
+                    INNER JOIN genre ON movie.genre_id = genre.id)
+                    INNER JOIN studio ON movie.studio_id = studio.id)";
         
+        $AND = 0;
+
         //Prepares the sql statement
         if (($_SESSION["lookup"] != null) || ($_SESSION["genre"] != NULL) || ($_SESSION["studio"] != NULL)){
             $sql = $sql . " WHERE ";
             //echo "<br />" . $_SESSION["lookup"] . ", " . $_SESSION["genre"] . ", " . $_SESSION["studio"] . "<br />";
         }
         if ($_SESSION["lookup"] != null){
-            $sql = $sql . " name = '" . $_SESSION["lookup"] ."'";
+            $sql = $sql . " movie.name = '" . $_SESSION["lookup"] ."'";
             $AND = 1;
         }
         if ($_SESSION["genre"] != null){
@@ -106,16 +107,16 @@
         $sql = $sql . " ORDER BY movie." . $_SESSION["sort"];
         
         //TEMP: used to see what sql statement is
-        echo "<br>".$sql."<br>";
+        //echo "<br>".$sql."<br>";
         
         //executes sql statement
         echo "KEY: NAME, TYPE, AVAILABLE, PRICE <br />";
         $stmt = $dbConn -> prepare($sql);
         $stmt -> execute ();
         
-        echo "<form method='post'>";
+        echo "<form id='list' method='post'>";
         while ($row = $stmt -> fetch())  {
-            echo  "<button id='" . $row['name'] . "' onClick='reply_click(this.id)'>Add: </button>" . $row['name'] . ", " . $row['type'] . ", " . $row['availability'] . ", $" . $row['price'] . "<br />";
+            echo  "<button id='" . $row['name'] . "' onClick='reply_click(this.id'>Info: </button>" . $row['name'] . ", " . $row['genre'] . ", " . $row['studio'] . ", $" . $row['price'] . "<br />";
             
         }
         echo "</form>";

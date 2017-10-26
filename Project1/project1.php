@@ -7,14 +7,14 @@
     //     array_push($userCart, $itemID);
     //     $_SESSION["userCart"] = $userCart;
     // }
-    if(isset($_GET["nameTxt"]))
-        $_SESSION["userName"] = $_GET["nameTxt"];
-    if(isset($_GET["typeTxt"]))
-        $_SESSION["userType"] = $_GET["typeTxt"];
-    if(isset($_GET["quantTxt"]))
-        $_SESSION["userQuant"] = $_GET["quantTxt"];
+    if(isset($_GET["lookupTxt"]))
+        $_SESSION["lookup"] = $_GET["lookupTxt"];
+    if(isset($_GET["genreTxt"]))
+        $_SESSION["genre"] = $_GET["genreTxt"];
+    if(isset($_GET["studioTxt"]))
+        $_SESSION["studio"] = $_GET["studioTxt"];
     if(isset($_GET["sortTxt"]))
-        $_SESSION["userOrder"] = $_GET["sortTxt"];
+        $_SESSION["sort"] = $_GET["sortTxt"];
     if($_SESSION["buttClick"] == null)
         $_SESSION["buttClick"] = "none";
 ?>
@@ -32,16 +32,24 @@
             }
         </script>
         <form method="get">
-            Item Name: <input type="text" name="nameTxt"> <br />
-            Item Type: <select name="typeTxt">
+            Name Lookup: <input type="text" name="lookupTxt"> <br />
+            
+            Genre: <select name="genreTxt">
                 <option value="">No Type</option>
-                <option value="phone">Phones</option>
-                <option value="laptop">Laptops</option>
-                <option value="computer">Desktops</option>
-                <option value="tablet">Tablets</option>
+                <option value="animation">Animation</option>
+                <option value="fantasy">Fantasy</option>
+                <option value="adventure">Adventure</option>
+                <option value="horror">Horror</option>
             </select> <br />
-            <input type="hidden" name="quantTxt" value="">
-            Show only if in stock:<input type="checkbox" name="quantTxt" value="1">
+            
+            Studio: <select name="studioTxt">
+                <option value="">No Type</option>
+                <option value="Disney">Disney</option>
+                <option value="Pixar">Pixar</option>
+                <option value="Dreamworks">Dreamworks</option>
+            </select> <br />
+            <input type="hidden" name="studioTxt" value="">
+            Show only if in stock:<input type="checkbox" name="studioTxt" value="1">
             <br />
             Sort By: <select name="sortTxt">
                 <option value="name">Name</option>
@@ -63,35 +71,43 @@
         $dbConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         
-        $sql = " SELECT * FROM device";
+        //$sql = " SELECT * FROM movie";
+        $sql = "SELECT movie.name, movie.price, genre.name
+                FROM ((movie_genre
+                    INNER JOIN movie ON movie_genre.movie_id = movie.id) 
+                    INNER JOIN genre ON movie_genre.genre_id = genre.id)";
         $AND = 0;
         
         //Prepares the sql statement
-        if (($_SESSION["userName"] != null) || ($_SESSION["userType"] != NULL) || ($_SESSION["userQuant"] != NULL)){
+        if (($_SESSION["lookup"] != null) || ($_SESSION["genre"] != NULL) || ($_SESSION["studio"] != NULL)){
             $sql = $sql . " WHERE ";
-            //echo "<br />" . $_SESSION["userName"] . ", " . $_SESSION["userType"] . ", " . $_SESSION["userQuant"] . "<br />";
+            //echo "<br />" . $_SESSION["lookup"] . ", " . $_SESSION["genre"] . ", " . $_SESSION["studio"] . "<br />";
         }
-        if ($_SESSION["userName"] != null){
-            $sql = $sql . " name = '" . $_SESSION["userName"] ."'";
+        if ($_SESSION["lookup"] != null){
+            $sql = $sql . " name = '" . $_SESSION["lookup"] ."'";
             $AND = 1;
         }
-        if ($_SESSION["userType"] != null){
+        if ($_SESSION["genre"] != null){
             if ($AND == 1){
                 $sql = $sql . " AND ";
             }
-            $sql = $sql . " type = '" . $_SESSION["userType"] ."'";
+            $sql = $sql . " genre.name = '" . $_SESSION["genre"] ."'";
             $AND = 1;
         }
-        if ($_SESSION["userQuant"] != null){
+        if ($_SESSION["studio"] != null){
             if ($AND == 1){
                 $sql = $sql . " AND ";
             }
-            $sql = $sql . " availability = '" . $_SESSION["userQuant"] ."'";
+            $sql = $sql . " studio.name = '" . $_SESSION["studio"] ."'";
             $AND = 1;
         }
-        if ($_SESSION["userOrder"] == null)
-            $_SESSION["userOrder"] = "name";
-        $sql = $sql . " ORDER BY " . $_SESSION["userOrder"];
+        if ($_SESSION["sort"] == null)
+            $_SESSION["sort"] = "name";
+        $sql = $sql . " ORDER BY movie." . $_SESSION["sort"];
+        
+        //TEMP: used to see what sql statement is
+        echo "<br>".$sql."<br>";
+        
         //executes sql statement
         echo "KEY: NAME, TYPE, AVAILABLE, PRICE <br />";
         $stmt = $dbConn -> prepare($sql);

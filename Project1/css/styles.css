@@ -30,6 +30,30 @@ h1{
     display: inline-block;
     padding: 25px;
     text-align: left;
-    background-color: rgb(209, 219, 189);
+    background-color: rgb(252, 255, 189);
     
+}
+
+#cartList{
+    display: inline-block;
+    padding: 25px;
+    text-align: left;
+    background-color: white;
+    
+}
+
+#descTitle{
+    font-size: 45pt;
+    background-color: white;
+}
+
+#movieInfo{
+    font-size: 25pt;
+    text-align: left;
+    background-color: gray;
+    padding: 15px;
+}
+
+#links{
+    font-size: 35pt;
 }

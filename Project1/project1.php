@@ -17,6 +17,9 @@
         $_SESSION["sort"] = $_GET["sortTxt"];
     if(isset($_GET["priceTxt"]))
         $_SESSION["price"] = $_GET["priceTxt"];
+        
+    if($_GET["reset"]==1)
+            unset($_SESSION["myCart"]);
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +37,7 @@
                 }
             </script>
             <form id="forms" method="get">
-                Name Lookup: <input type="text" list="options" name="lookupTxt" autocomplete="on"> <br />
+                Name Lookup: <input type="text" list="options" name="lookupTxt" autocomplete="off"> <br />
                 
                 <datalist id="options">
                     <?php
@@ -58,10 +61,16 @@
                 
                 Genre: <select name="genreTxt">
                     <option value="">Any Genre</option>
-                    <option value="Animation">Animation</option>
-                    <option value="Fantasy">Fantasy</option>
-                    <option value="Adventure">Adventure</option>
-                    <option value="Horror">Horror</option>
+                    <option value="animation">Animation</option>
+                    <option value="adventure">Adventure</option>
+                    <option value="sci-fi">Sci-Fi</option>
+                    <option value="fantasy">Fantasy</option>
+                    <option value="mystery">Mystery</option>
+                    <option value="action">Action</option>
+                    <option value="romance">Romance</option>
+                    <option value="drama">Drama</option>
+                    <option value="thriller">Thriller</option>
+                    <option value="comedy">Comedy</option>
                 </select> <br />
                 
                 Studio: <select name="studioTxt">
@@ -69,6 +78,8 @@
                     <option value="Disney">Disney</option>
                     <option value="Pixar">Pixar</option>
                     <option value="Dreamworks">Dreamworks</option>
+                    <option value="Studio Ghibli">Studio Ghibli</option>
+                    <option value="Warner Brothers">Warner Brothers</option>
                 </select> <br />
                 
                 Price: <select name="priceTxt">
@@ -83,7 +94,7 @@
                     <option value="name">Name</option>
                     <option value="price">Price</option>
                 </select>
-                <br><input type="submit" value="Search">
+                <br><input type="submit" value="Search" >
             </form>
         
         <?php
@@ -163,7 +174,8 @@
                 echo "-".$_SESSION['myCart'][$i]."<br />";
             }  
         echo "<br>";
-        echo "<a href='https://project-1-carlosgarcia.c9users.io/Project1/project1.php' style='color:red' > Delete Shopping List </a>";
+        
+        echo "<a href='./project1.php?reset=1' style='color:red' > Delete Shopping List </a>";
         echo "</div><br><br>";
         
         //print out list of available movies based on sql select
@@ -179,7 +191,7 @@
             }
         echo "</form>";
         
-        session_unset();
+        //session_unset();
         
 
         ?>

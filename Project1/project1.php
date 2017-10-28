@@ -38,7 +38,7 @@
                 
                 <datalist id="options">
                     <?php
-                    $dbHost = getenv("IP");
+                    $dbHost = getenv("db_host");
                     $dbPort = 3306;
                     $dbName = getenv("database");
                     $username = getenv("db_name");
@@ -88,7 +88,7 @@
         
         <?php
         //connecting to db
-        $dbHost = getenv('IP');
+        $dbHost = getenv("db_host");
         $dbPort = 3306;
         $dbName = getenv("database");
         $username = getenv("db_name");

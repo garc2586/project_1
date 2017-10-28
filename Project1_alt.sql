@@ -144,9 +144,10 @@ INSERT INTO `studio` (`id`, `name`) VALUES
 -- Constraints for table `movie`
 --
 ALTER TABLE `movie`
-  ADD CONSTRAINT `movie_ibfk_11` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`),
-  ADD CONSTRAINT `movie_ibfk_22` FOREIGN KEY (`studio_id`) REFERENCES `studio` (`id`);
+  ADD CONSTRAINT `movie_ibfk_1` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`),
+  ADD CONSTRAINT `movie_ibfk_2` FOREIGN KEY (`studio_id`) REFERENCES `studio` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

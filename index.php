@@ -15,7 +15,7 @@
         <h1>Project 1</h1>
         
         <div id=list>
-            <a href="/Project1/project1.php">Assignments</a>
+            <a href="/Project1/project1.php">Project1</a>
         </div>
         <div></div>
     </body>

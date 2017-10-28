@@ -7,11 +7,11 @@
     if(isset($_GET["nametest"]))
         $_SESSION["testnames"] = $_GET["nametest"];
     
-    $dbHost = getenv('IP');
+    $dbHost = getenv("db_host");
     $dbPort = 3306;
-    $dbName = getenv("sqldb");
-    $username = getenv("sqluser");
-    $password = getenv("sqlpw");
+    $dbName = getenv("database");
+    $username = getenv("db_name");
+    $password = getenv("db_password");
     
     $dbConn = new PDO("mysql:host=$dbHost;port=$dbPort;dbname=$dbName", $username, $password);
     $dbConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
